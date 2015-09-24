@@ -1,20 +1,20 @@
 This is a C++ library for Arduino for controlling the Asuro robot
-Tested on Arduino 0010 Alpha.
+Tested with Arduino IDE v1.6.5.
 
 Installation
 --------------------------------------------------------------------------------
 
 To install this library, just place this entire folder as a subfolder in your
-Arduino-xxxx/hardware/libraries folder.
+˜/Documents/Arduino/libraries folder.
 
 When installed, this library should look like:
 
-Arduino-xxxx/hardware/libraries/Asuro              (this library's folder)
-Arduino-xxxx/hardware/libraries/Asuro/Asuro.cpp    (the library implementation file)
-Arduino-xxxx/hardware/libraries/Asuro/Asuro.h      (the library description file)
-Arduino-xxxx/hardware/libraries/Asuro/keywords.txt (the syntax coloring file)
-Arduino-xxxx/hardware/libraries/Asuro/examples     (the examples in the "open" menu)
-Arduino-xxxx/hardware/libraries/Asuro/readme.txt   (this file)
+˜/Documents/Arduino/libraries/Asuro              (this library's folder)
+˜/Documents/Arduino/libraries/Asuro/Asuro.cpp    (the library implementation file)
+˜/Documents/Arduino/libraries/Asuro/Asuro.h      (the library description file)
+˜/Documents/Arduino/libraries/Asuro/keywords.txt (the syntax coloring file)
+˜/Documents/Arduino/libraries/Asuro/examples     (the examples in the "open" menu)
+˜/Documents/Arduino/libraries/Asuro/readme.txt   (this file)
 
 Building
 --------------------------------------------------------------------------------
