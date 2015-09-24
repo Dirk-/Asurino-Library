@@ -1,0 +1,31 @@
+#######################################
+# Syntax Coloring Map For Asuro
+#######################################
+
+#######################################
+# Datatypes (KEYWORD1)
+#######################################
+
+Asuro KEYWORD1
+
+#######################################
+# Methods and Functions (KEYWORD2)
+#######################################
+
+Init          KEYWORD2
+setTimer2     KEYWORD2
+readBattery 	KEYWORD2
+readSwitches 	KEYWORD2
+readOdometry 	KEYWORD2
+readLinesensor 	KEYWORD2
+setStatusLED 	KEYWORD2
+setBackLED 		KEYWORD2
+setMotorDirection KEYWORD2
+setMotorSpeed KEYWORD2
+driveSquare   KEYWORD2
+driveCircular KEYWORD2
+
+#######################################
+# Constants (LITERAL1)
+#######################################
+
