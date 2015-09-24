@@ -1,4 +1,8 @@
 /*
+	Modifizierte Version, basierend auf Asurino V0.3
+
+	Änderungen: setFrontLED hinzugefügt, readOdometry und readLinesensor korrigiert
+				Kommentare ergänzt, Konstanten sortiert
 */
 
 #include "Asuro.h"
@@ -12,12 +16,35 @@ extern "C" {
   #include <avr/interrupt.h>
 }
 
+// internal constants
+#define rforward 13
+#define rreverse 12
+#define lforward 5
+#define lreverse 4
+#define lmotor 9
+#define rmotor 10
+#define statusledred 2
+#define frontled 6
+#define irtxled 11
+#define lphotores 3
+#define rphotores 2
+#define statusledgreen 8
+#define odometricled 7
+#define lodometric 1
+#define rodometric 0
+#define switches 4
+#define battery 5
+#define lbackled 1
+#define rbackled 0
+#define IR_CLOCK_RATE    36000L
+
 /* Asuro infrared UART interfaces uses Timer2 with 72kHz */
 /* counts falling and rising edge => 36kHz*2 = 72kHz */
 #if defined(__AVR_ATmega168__)
 SIGNAL(SIG_OUTPUT_COMPARE2A) {
 #else
-SIGNAL(SIG_OUTPUT_COMPARE2) { 
+//SIGNAL(SIG_OUTPUT_COMPARE2) {
+ISR(TIMER2_COMP_vect) {
 #endif
 } 
 
@@ -88,6 +115,12 @@ void Asuro::setBackLED(unsigned char left, unsigned char right)
   if (!right) PORTC &= ~(1 << PC0);
 }
 
+//
+void Asuro::setFrontLED(unsigned char status)
+{
+	digitalWrite(frontled, status);
+}
+
 // Bicolor Status LED
 void Asuro::setStatusLED(unsigned char color)
 {
@@ -148,7 +181,7 @@ void Asuro::readLinesensor(int *data)
 //motor direction
 void Asuro::setMotorDirection (int left, int right)
 {
-  if (left == 1) 
+  if (left == FWD) 
   {
     //left motor forwards
     digitalWrite (4, LOW);
@@ -160,7 +193,7 @@ void Asuro::setMotorDirection (int left, int right)
     digitalWrite (4, HIGH);
     digitalWrite (5, LOW);
   }
-  if (right == 1) 
+  if (right == FWD) 
   {
     //right motor forwards
     digitalWrite (12, LOW);
@@ -184,29 +217,31 @@ void Asuro::setMotorSpeed (int left, int right)
 }
 
 //"square" motion pattern
-void Asuro::driveSquare(int size, int speed)
+void Asuro::driveSquare(int timeForOneEdge, int speed)
 {
   setMotorSpeed(speed, speed);
   //forwards
   setMotorDirection (1, 1);
-  delay (size);
+  delay (timeForOneEdge);
   //right
   setMotorDirection (1,0);    
-  delay (size);
+  delay (timeForOneEdge);
   //backwards
   setMotorDirection (0, 0);
-  delay (size);
+  delay (timeForOneEdge);
   //left
   setMotorDirection (0,1);
-  delay (size);
+  delay (timeForOneEdge);
   setMotorSpeed(0, 0);
 }
 
 //circular accelerating motion pattern
-void Asuro::driveCircular(int length)
+void Asuro::driveCircular(int maxSpeed)
 {
   int var = 0;
-  while(var < length)
+  if (maxSpeed > 255)
+	maxSpeed = 255;
+  while(var < maxSpeed)
   {
     //left motor forwards
     digitalWrite (4, LOW);
@@ -214,9 +249,7 @@ void Asuro::driveCircular(int length)
     //right motor backwards
     digitalWrite (12, HIGH);
     digitalWrite (13, LOW);
-    lmotorspeed = var;
-    rmotorspeed = var;
-    setMotorSpeed(lmotorspeed, rmotorspeed);
+    setMotorSpeed(var, var);
     delay(25);
     var++;
   }
