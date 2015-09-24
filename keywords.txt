@@ -20,6 +20,7 @@ readOdometry 	KEYWORD2
 readLinesensor 	KEYWORD2
 setStatusLED 	KEYWORD2
 setBackLED 		KEYWORD2
+setFrontLED 		KEYWORD2
 setMotorDirection KEYWORD2
 setMotorSpeed KEYWORD2
 driveSquare   KEYWORD2

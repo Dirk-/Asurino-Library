@@ -17,10 +17,8 @@ void loop()
 {
   int Data[2];
   
-  asuro.setStatusLED(GREEN);         /* status led green */  
-  
-  //front LED on
-  digitalWrite(frontled, HIGH);
+  asuro.setStatusLED(GREEN);  
+  asuro.setFrontLED(ON);
 
   /* reading the line sensor photoresistors */
   asuro.readLinesensor(Data);
