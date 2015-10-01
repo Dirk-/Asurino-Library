@@ -93,7 +93,7 @@ new "Asuro.o" with your code will appear after the next press of "verify"
 --------------------------------------------------------------------------------
 Credits
 --------------------------------------------------------------------------------
-This library is based on the sketch for the asuro from Jakob Remin.
+This library is based on a sketch for the ASURO by Jakob Remin.
 Version 0.3 of this library was developed by m_a_r_v_i_n and sternthaler
 
 --------------------------------------------------------------------------------
