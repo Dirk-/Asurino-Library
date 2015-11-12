@@ -169,8 +169,8 @@ void Asuro::readOdometry(int *data)
     DDRC &= ~((1 << PC0) | (1 << PC1));   // Back-LEDs off
     digitalWrite(odometricled, HIGH);
     delayMicroseconds(10);
-    data[LEFT] = analogRead(lphotores);
-    data[RIGHT] = analogRead(rphotores);
+    data[LEFT] = analogRead(lodometric);
+    data[RIGHT] = analogRead(rodometric);
     ADMUX = oldadmux;
 }
 
@@ -179,8 +179,8 @@ void Asuro::readLinesensor(int *data)
 {
     uint8_t oldadmux = (ADMUX & (unsigned int) 0xf0);
     ADMUX = (1 << REFS0) ;
-    data[LEFT] = analogRead(lodometric);
-    data[RIGHT] = analogRead(rodometric);
+    data[LEFT] = analogRead(lphotores);
+    data[RIGHT] = analogRead(rphotores);
     ADMUX = oldadmux;
 }
 
