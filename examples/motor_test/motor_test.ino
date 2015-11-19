@@ -9,7 +9,6 @@ void setup()
 {
   asuro.Init();
   Serial.begin(2400);
-  asuro.setTimer2();       /* 36kHz for IR communication */
 }
 
 void loop()
@@ -23,7 +22,7 @@ void loop()
     var++;
   }
   
-  //backward and foward test engines
+  // test engines backward and forward
   asuro.setMotorSpeed(255, 255);
   //forward
   asuro.setMotorDirection (1, 1);

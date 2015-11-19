@@ -9,7 +9,6 @@ void setup()
 {
   asuro.Init();
   Serial.begin(2400);
-  asuro.setTimer2();       /* 36kHz for IR communication */
 }
 
 void loop()
@@ -21,20 +20,20 @@ void loop()
 
   // Read the line sensor photoresistors
   asuro.readLinesensor(Data);
-  Serial.println("left photoresistor");
-  Serial.println(Data[0]);
-  Serial.println("right photoresistor");
-  Serial.println(Data[1]);
+  Serial.print("Left photoresistor: ");
+  Serial.println(Data[LEFT]);
+  Serial.print("Right photoresistor: ");
+  Serial.println(Data[RIGHT]);
 
   // Read odometry sensors
   asuro.readOdometry(Data);
-  Serial.println("left odometry");
-  Serial.println(Data[0]);
-  Serial.println("right odometry");
-  Serial.println(Data[1]);
+  Serial.print("Left odometry: ");
+  Serial.println(Data[LEFT]);
+  Serial.print("Right odometry: ");
+  Serial.println(Data[RIGHT]);
 
   // Read battery charge
-  Serial.println("battery");
+  Serial.print("Battery: ");
   Serial.println(asuro.readBattery());
 
 }

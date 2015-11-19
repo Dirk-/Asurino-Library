@@ -9,7 +9,6 @@ void setup()
 {
   asuro.Init();
   Serial.begin(2400);
-  asuro.setTimer2();       /* 36kHz for IR communication */
 }
 
 void loop()
@@ -18,7 +17,7 @@ void loop()
   
   // front switch test
   Switches = asuro.readSwitches();
-  if (Switches)    /* switch pressed? */
+  if (Switches > 0)  // at least one switch was pressed
   {
     Serial.print("Switches pressed: ");
     Serial.println(Switches, BIN);   // send switch value as binary so one can identify the switches

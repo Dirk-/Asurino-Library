@@ -8,6 +8,12 @@
     -   Corrected readOdometry and readLinesensor
     -   Added some comments
     -   Rearranged constants
+    -   New Arduino library format
+    -   Added interrupt example
+ 
+ Modifications by Dirk Froehling, November 2015
+ 
+ License: GNU General Public License version 2.0 (GPLv2)
  
  */
 
@@ -44,8 +50,9 @@ extern "C" {
 #define rbackled 0
 #define IR_CLOCK_RATE    36000L
 
-/* Asuro infrared UART interfaces uses Timer2 with 72kHz */
-/* counts falling and rising edge => 36kHz*2 = 72kHz */
+
+// Asuro infrared UART interfaces uses Timer2 with 72kHz
+// counts falling and rising edge => 36kHz*2 = 72kHz
 #if defined(__AVR_ATmega168__)
 SIGNAL(SIG_OUTPUT_COMPARE2A) {
 }
@@ -55,22 +62,12 @@ ISR(TIMER2_COMP_vect) {
 }
 #endif
 
+
 Asuro::Asuro(void)
 {
-    pinMode(rforward, OUTPUT);
-    pinMode(rreverse, OUTPUT);
-    pinMode(lforward, OUTPUT);
-    pinMode(lreverse, OUTPUT);
-    pinMode(frontled, OUTPUT);
-    pinMode(statusledred, OUTPUT);
-    pinMode(statusledgreen, OUTPUT);
-    pinMode(odometricled, OUTPUT);
-    pinMode(irtxled, OUTPUT);
-    
-    // fix analog-to-digital converter timing (for 8 MHz clock)
-    ADCSRA &= ~ADPS0;
-    setTimer2();
+    // Do nothing. We could call Init() here, but we will adhere to the ASURO standard.
 }
+
 
 void Asuro::Init(void)
 {
@@ -88,6 +85,7 @@ void Asuro::Init(void)
     ADCSRA &= ~ADPS0;
     setTimer2();
 }
+
 
 // Set Timer2 for infrared transmitter
 void Asuro::setTimer2(void)
@@ -121,11 +119,13 @@ void Asuro::setBackLED(unsigned char left, unsigned char right)
     if (!right) PORTC &= ~(1 << PC0);
 }
 
+
 //
 void Asuro::setFrontLED(unsigned char status)
 {
     digitalWrite(frontled, status);
 }
+
 
 // Bicolor Status LED
 void Asuro::setStatusLED(unsigned char color)
@@ -135,6 +135,7 @@ void Asuro::setStatusLED(unsigned char color)
     if (color == YELLOW) {digitalWrite(statusledgreen, HIGH); digitalWrite(statusledred, HIGH);}
     if (color == RED)    {digitalWrite(statusledgreen, LOW); digitalWrite(statusledred, HIGH);}
 }
+
 
 //read front switches
 int Asuro::readSwitches(void)
@@ -161,6 +162,7 @@ int Asuro::readBattery(void)
     return tmp;
 }
 
+
 //read odometry
 void Asuro::readOdometry(int *data)
 {
@@ -174,6 +176,7 @@ void Asuro::readOdometry(int *data)
     ADMUX = oldadmux;
 }
 
+
 //read line sensors
 void Asuro::readLinesensor(int *data)
 {
@@ -183,6 +186,7 @@ void Asuro::readLinesensor(int *data)
     data[RIGHT] = analogRead(rphotores);
     ADMUX = oldadmux;
 }
+
 
 //motor direction
 void Asuro::setMotorDirection (int left, int right)
@@ -213,6 +217,7 @@ void Asuro::setMotorDirection (int left, int right)
     }
 }
 
+
 //motor speed
 void Asuro::setMotorSpeed (int left, int right)
 {
@@ -222,24 +227,26 @@ void Asuro::setMotorSpeed (int left, int right)
     analogWrite(10, rmotorspeed);
 }
 
+
 //"square" motion pattern
 void Asuro::driveSquare(int timeForOneEdge, int speed)
 {
     setMotorSpeed(speed, speed);
     //forwards
-    setMotorDirection (1, 1);
+    setMotorDirection (FWD, FWD);
     delay (timeForOneEdge);
     //right
-    setMotorDirection (1,0);
+    setMotorDirection (FWD, RWD);
     delay (timeForOneEdge);
     //backwards
-    setMotorDirection (0, 0);
+    setMotorDirection (RWD, RWD);
     delay (timeForOneEdge);
     //left
-    setMotorDirection (0,1);
+    setMotorDirection (RWD, FWD);
     delay (timeForOneEdge);
     setMotorSpeed(0, 0);
 }
+
 
 //circular accelerating motion pattern
 void Asuro::driveCircular(int maxSpeed)

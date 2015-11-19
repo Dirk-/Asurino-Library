@@ -9,7 +9,6 @@ void setup()
 {
   asuro.Init();
   Serial.begin(2400);
-  asuro.setTimer2();       /* 36kHz for IR communication */
 }
 
 void loop()

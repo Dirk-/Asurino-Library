@@ -10,6 +10,12 @@
  -   Corrected readOdometry and readLinesensor
  -   Added some comments
  -   Rearranged constants
+ -   New Arduino library format
+ -   Added interrupt example
+ 
+ Modifications by Dirk Froehling, November 2015
+ 
+ License: GNU General Public License version 2.0 (GPLv2)
  
  */
 #include <inttypes.h>
@@ -38,7 +44,7 @@ public:
     Asuro(void);
     
     /*
-     Initialises the hardware (ports, ADC, PWM)
+     Initializes the hardware (ports, ADC, PWM)
      this function has to be called by every program first
      */
     void Init(void);
@@ -92,7 +98,7 @@ public:
     void readLinesensor(int *data);
     
     /*
-     Motor configuration. values: FWD, RWD, (BREAK, FREE gibt es noch nicht)
+     Motor configuration. values: FWD, RWD, (BREAK, FREE not yet available)
      left left motor direction
      right right motor direction
      */
