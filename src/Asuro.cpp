@@ -51,6 +51,9 @@ extern "C" {
 #define IR_CLOCK_RATE    36000L
 
 
+void (*ISRfunction)();
+
+
 // Asuro infrared UART interfaces uses Timer2 with 72kHz
 // counts falling and rising edge => 36kHz*2 = 72kHz
 #if defined(__AVR_ATmega168__)
@@ -60,6 +63,16 @@ SIGNAL(SIG_OUTPUT_COMPARE2A) {
 //SIGNAL(SIG_OUTPUT_COMPARE2) {
 ISR(TIMER2_COMP_vect) {
 }
+#endif
+
+
+#if defined (__AVR_ATmega8__)
+ISR (TIMER1_COMPA_vect)
+{
+    (*ISRfunction)();
+}
+#else
+#error CPU type not yet supported
 #endif
 
 
@@ -84,6 +97,37 @@ void Asuro::Init(void)
     // fix analog-to-digital converter timing (for 8 MHz clock)
     ADCSRA &= ~ADPS0;
     setTimer2();
+}
+
+
+void Asuro::startTimer1(unsigned long ms, void (*isrfunction)())
+{
+#if defined (__AVR_ATmega8__)
+    ISRfunction = isrfunction;
+    
+    TCCR1A = 0x00;      // Timer benutzt kein PWM
+    
+    // ASURO-Taktfrequenz (F_CPU) ist 8 MHz. Prescaler von 1024 sorgt für 7812,5 Ticks pro Sekunde
+    TCCR1B = (1<<CS10) | (1<<CS12) | (1<<WGM12); // Prescale = 1024, CTC ("Clear Timer on Compare")
+    
+    // Hier wird der Vergleichswert gesetzt
+    unsigned long compare = F_CPU / 1024L * ms  / 1000L;
+    OCR1A = compare;
+    
+    TIMSK |= (1<<OCIE1A); // Compare A Match Interrupt aktivieren
+#else
+#error CPU type not yet supported
+#endif
+}
+
+void Asuro::stopTimer1()
+{
+#if defined (__AVR_ATmega8__)
+    // Timer über das Timer/Counter Interrupt Mask Register disablen
+    TIMSK &= ~(1<<OCIE1A);
+#else
+#error CPU type not yet supported
+#endif
 }
 
 

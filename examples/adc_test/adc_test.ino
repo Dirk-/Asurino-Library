@@ -1,4 +1,4 @@
-/*
+ /*
  * A/D converter test for the Asuro
  */
 #include <Asuro.h>

@@ -36,7 +36,10 @@
 // user adjustable values
 #define MY_SWITCH_VALUE  62L
 
+
+// Class definition
 class Asuro {
+
 public:
     /*
      Constructor
@@ -54,6 +57,18 @@ public:
      */
     void setTimer2(void);
     
+    /*
+     Start Timer1 to carry out a periodically called task
+     ms Time in milliseconds
+     isrfunction Function to be carried out (void, no parameters)
+     */
+    void startTimer1(unsigned long ms, void (*isrfunction)());
+    
+    /*
+     Stop Timer1
+     */
+    void stopTimer1();
+
     /*
      Set back LEDs, values: ON, OFF
      left left LED status
@@ -124,6 +139,7 @@ public:
     
     
 private:
+    
     int lmotorspeed;
     int rmotorspeed;
 };
