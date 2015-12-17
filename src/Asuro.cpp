@@ -34,12 +34,13 @@ extern "C" {
 // These numbers correspond to the Arduino board, see
 // https://www.arduino.cc/en/Hacking/PinMapping and
 // http://www.asurowiki.de/pmwiki/pmwiki.php/Main/Prozessor
-#define rforward 13
-#define rreverse 12
-#define lforward 5
-#define lreverse 4
-#define lmotor 9
-#define rmotor 10
+#define PB5 13
+#define PB4 12
+#define PD5 5
+#define PD4 4
+#define PWM_MOTOR_L 9
+#define PWM_MOTOR_R 10
+
 #define statusledred 2
 #define frontled 6
 #define irtxled 11
@@ -93,16 +94,21 @@ Asuro::Asuro(void)
 
 void Asuro::Init(void)
 {
-    pinMode(rforward, OUTPUT);
-    pinMode(rreverse, OUTPUT);
-    pinMode(lforward, OUTPUT);
-    pinMode(lreverse, OUTPUT);
+    // Ports for motor control
+    pinMode(PB4, OUTPUT);
+    pinMode(PB5, OUTPUT);
+    pinMode(PD4, OUTPUT);
+    pinMode(PD5, OUTPUT);
+    
     pinMode(frontled, OUTPUT);
     pinMode(statusledred, OUTPUT);
     pinMode(statusledgreen, OUTPUT);
     pinMode(odometricled, OUTPUT);
     pinMode(irtxled, OUTPUT);
     
+    // for PWM (8-Bit PWM) on OC1A & OC1B
+    TCCR1A = (1 << WGM10) | (1 << COM1A1) | (1 << COM1B1);
+
     // fix analog-to-digital converter timing (for 8 MHz clock)
     ADCSRA &= ~ADPS0;
     setTimer2();
@@ -244,29 +250,46 @@ void Asuro::readLinesensor(int *data)
 //motor direction
 void Asuro::setMotorDirection (int left, int right)
 {
-    if (left == FWD)
-    {
-        //left motor forwards
-        digitalWrite (4, LOW);
-        digitalWrite (5, HIGH);
+    switch (left) {
+        case FWD:
+            digitalWrite (PD4, LOW);
+            digitalWrite (PD5, HIGH);
+            break;
+        case RWD:
+            digitalWrite (PD4, HIGH);
+            digitalWrite (PD5, LOW);
+            break;
+        case BREAK:
+            digitalWrite (PD4, LOW);
+            digitalWrite (PD5, LOW);
+            break;
+        case FREE:
+            digitalWrite (PD4, HIGH);
+            digitalWrite (PD5, HIGH);
+            break;
+        default:
+            break;
     }
-    else
-    {
-        //left motor backwards
-        digitalWrite (4, HIGH);
-        digitalWrite (5, LOW);
-    }
-    if (right == FWD)
-    {
-        //right motor forwards
-        digitalWrite (12, LOW);
-        digitalWrite (13, HIGH);
-    }
-    else
-    {
-        //right motor backwards
-        digitalWrite (12, HIGH);
-        digitalWrite (13, LOW);
+    
+    switch (right) {
+        case FWD:
+            digitalWrite (PB4, LOW);
+            digitalWrite (PB5, HIGH);
+            break;
+        case RWD:
+            digitalWrite (PB4, HIGH);
+            digitalWrite (PB5, LOW);
+            break;
+        case BREAK:
+            digitalWrite (PB4, LOW);
+            digitalWrite (PB5, LOW);
+            break;
+        case FREE:
+            digitalWrite (PB4, HIGH);
+            digitalWrite (PB5, HIGH);
+            break;
+        default:
+            break;
     }
 }
 
@@ -274,10 +297,8 @@ void Asuro::setMotorDirection (int left, int right)
 //motor speed
 void Asuro::setMotorSpeed (int left, int right)
 {
-    lmotorspeed = left;
-    rmotorspeed = right;
-    analogWrite(9, lmotorspeed);
-    analogWrite(10, rmotorspeed);
+    analogWrite(PWM_MOTOR_L, left);
+    analogWrite(PWM_MOTOR_R, right);
 }
 
 
@@ -307,14 +328,9 @@ void Asuro::driveCircular(int maxSpeed)
     int var = 0;
     if (maxSpeed > 255)
         maxSpeed = 255;
+    setMotorDirection(FWD, RWD);
     while(var < maxSpeed)
     {
-        //left motor forwards
-        digitalWrite (4, LOW);
-        digitalWrite (5, HIGH);
-        //right motor backwards
-        digitalWrite (12, HIGH);
-        digitalWrite (13, LOW);
         setMotorSpeed(var, var);
         delay(25);
         var++;

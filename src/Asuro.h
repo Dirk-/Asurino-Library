@@ -20,17 +20,19 @@
  */
 #include <inttypes.h>
 
-#define OFF 0
-#define ON 1
-#define RED 2
-#define GREEN 3
-#define YELLOW 4
+#define OFF     0
+#define ON      1
+#define RED     2
+#define GREEN   3
+#define YELLOW  4
 
-#define LEFT 0
-#define RIGHT 1
+#define LEFT    0
+#define RIGHT   1
 
-#define FWD 1
-#define RWD 0
+#define FWD     1
+#define RWD     0
+#define BREAK	3
+#define FREE	4
 
 
 // user adjustable values
@@ -137,11 +139,6 @@ public:
     void driveCircular(int maxSpeed);
     
     
-    
-private:
-    
-    int lmotorspeed;
-    int rmotorspeed;
 };
 
 #endif
