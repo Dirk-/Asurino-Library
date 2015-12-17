@@ -28,7 +28,11 @@ extern "C" {
 #include <avr/interrupt.h>
 }
 
-// internal constants
+// ------------ Internal constants
+
+// Pin numbers for usage with analog/digitalRead/Write
+// These numbers correspond to the Arduino board, see
+// https://www.arduino.cc/en/Hacking/PinMapping
 #define rforward 13
 #define rreverse 12
 #define lforward 5
@@ -48,8 +52,12 @@ extern "C" {
 #define battery 5
 #define lbackled 1
 #define rbackled 0
+
+
 #define IR_CLOCK_RATE    36000L
 
+
+// -------------
 
 void (*ISRfunction)();
 
