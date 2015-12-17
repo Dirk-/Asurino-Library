@@ -32,7 +32,8 @@ extern "C" {
 
 // Pin numbers for usage with analog/digitalRead/Write
 // These numbers correspond to the Arduino board, see
-// https://www.arduino.cc/en/Hacking/PinMapping
+// https://www.arduino.cc/en/Hacking/PinMapping and
+// http://www.asurowiki.de/pmwiki/pmwiki.php/Main/Prozessor
 #define rforward 13
 #define rreverse 12
 #define lforward 5
