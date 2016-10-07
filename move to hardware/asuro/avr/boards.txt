@@ -1,0 +1,20 @@
+##############################################################
+ asuro8.name=Asuro w/ ATmega8
+ 
+ asuro8.upload.protocol=stk500
+ asuro8.upload.maximum_size=7168
+ asuro8.upload.speed=2400
+ asuro8.upload.tool=arduino:avrdude
+ 
+ asuro8.bootloader.low_fuses=0xdf
+ asuro8.bootloader.high_fuses=0xca
+ asuro8.bootloader.path=atmega8asuro
+ asuro8.bootloader.unlock_bits=0x3F
+ asuro8.bootloader.lock_bits=0x0F
+ # asuro8.bootloader.file=ATmegaBOOT_8_asuro.hex
+ 
+ asuro8.build.mcu=atmega8
+ asuro8.build.f_cpu=8000000L
+ asuro8.build.board=AVR_ASURO8
+ asuro8.build.core=arduino:arduino
+ asuro8.build.variant=arduino:standard

@@ -1,5 +1,5 @@
 This is a C++ library for Arduino for controlling the ASURO robot.
-Tested with Arduino IDE v1.6.5.
+Tested with Arduino IDE v1.6.12 on macOS and Windows 7.
 
 --------------------------------------------------------------------------------
 INSTALLATION
@@ -8,11 +8,16 @@ INSTALLATION
 To install this library
 
 - Download the ZIP file and extract everything
-- Rename the folder "Asurino-Library-master" to "asuro"
-- Move the "asuro" folder to "C:\Program Files\Arduino\libraries" (Windows) or
-  your "˜/Documents/Arduino/libraries" folder (OS X) 
+- Rename the folder "Asurino-Library-master" or "Asurino-Library-0.5" (depending
+  on the way you downloaded it from GitHub) to "asuro"
+- Move the "asuro" folder to "C:\Users\<username>\Documents\Arduino\libraries" (Windows) 
+  or your "˜/Documents/Arduino/libraries" folder (OS X) 
+- Move the contents of "move to hardware" to "C:\Users\<username>\Documents\Arduino\hardware" 
+  (Windows) or your "˜/Documents/Arduino/hardware" folder (macOS). If the "hardware"
+  folder does not exist, create it.
+- Delete the empty "move to hardware" folder.
 
-When installed, the library should look like this (OS X example):
+When installed, the library should look like this (macOS example):
 
 ˜/Documents/Arduino/libraries/asuro                  (this library's folder)
 ˜/Documents/Arduino/libraries/asuro/src/Asuro.cpp    (the library implementation file)
@@ -20,50 +25,42 @@ When installed, the library should look like this (OS X example):
 ˜/Documents/Arduino/libraries/asuro/keywords.txt     (the syntax coloring file)
 ˜/Documents/Arduino/libraries/asuro/examples         (the examples in the "open" menu)
 ˜/Documents/Arduino/libraries/asuro/readme.txt       (this file)
+˜/Documents/Arduino/hardware/asuro/avr/boards.txt    (ASURO board definition)
+˜/Documents/Arduino/hardware/asuro/avr/platform.txt  (ASURO platform compile options)
 
-Now you have to tell the Arduino IDE about the ASURO robot board specifications:
+Done.
+
+Instead of adding the two hardware definition files to your installation, you can also 
+edit the original boards.txt file (not recommended, as it will get overwritten when
+installing new versions of the Arduino IDE):
 
 - Close the Arduino IDE
 - Windows: Open "C:\Program Files\Arduino\hardware\arduino\avr\boards.txt" with
   WordPad, for example
-- Mac OS X: Right-click on the Arduino programm in your Programs folder, select
+- macOS: Right-click on the Arduino programm in your Programs folder, select
   "Show Content", then open ".../Contents/Java/hardware/arduino/avr/boards.txt"
 - Add the following lines to the end of "boards.txt":
 
 ##############################################################
  asuro8.name=Asuro w/ ATmega8
+ 
  asuro8.upload.protocol=stk500
  asuro8.upload.maximum_size=7168
  asuro8.upload.speed=2400
+ asuro8.upload.tool=arduino:avrdude
+ 
  asuro8.bootloader.low_fuses=0xdf
  asuro8.bootloader.high_fuses=0xca
  asuro8.bootloader.path=atmega8asuro
- asuro8.bootloader.file=ATmegaBOOT_8_asuro.hex
  asuro8.bootloader.unlock_bits=0x3F
  asuro8.bootloader.lock_bits=0x0F
+ # asuro8.bootloader.file=ATmegaBOOT_8_asuro.hex
+ 
  asuro8.build.mcu=atmega8
  asuro8.build.f_cpu=8000000L
- asuro8.build.core=arduino
- asuro8.build.variant=standard
-   
-##############################################################
- asuro168.name=Asuro w/ ATmega168
- asuro168.upload.protocol=stk500
- asuro168.upload.maximum_size=14336
- asuro168.upload.speed=9600
- asuro168.bootloader.low_fuses=0xff
- asuro168.bootloader.high_fuses=0xdd
- asuro168.bootloader.extended_fuses=0x00
- asuro168.bootloader.path=atmega168asuro
- asuro168.bootloader.file=ATmegaBOOT_168_asuro.hex
- asuro168.bootloader.unlock_bits=0x3F
- asuro168.bootloader.lock_bits=0x0F
- asuro168.build.mcu=atmega168
- asuro168.build.f_cpu=8000000L
- asuro168.build.core=arduino
-  
-The first board entry represents the original ASURO, the second entry the
-modified one.
+ asuro8.build.board=AVR_ASURO8
+ asuro8.build.core=arduino:arduino
+ asuro8.build.variant=arduino:standard
 
 
 --------------------------------------------------------------------------------
