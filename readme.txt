@@ -14,12 +14,12 @@ To install this library
 
 When installed, the library should look like this (OS X example):
 
-˜/Documents/Arduino/libraries/asuro              (this library's folder)
-˜/Documents/Arduino/libraries/asuro/Asuro.cpp    (the library implementation file)
-˜/Documents/Arduino/libraries/asuro/Asuro.h      (the library description file)
-˜/Documents/Arduino/libraries/asuro/keywords.txt (the syntax coloring file)
-˜/Documents/Arduino/libraries/asuro/examples     (the examples in the "open" menu)
-˜/Documents/Arduino/libraries/asuro/readme.txt   (this file)
+˜/Documents/Arduino/libraries/asuro                  (this library's folder)
+˜/Documents/Arduino/libraries/asuro/src/Asuro.cpp    (the library implementation file)
+˜/Documents/Arduino/libraries/asuro/src/Asuro.h      (the library description file)
+˜/Documents/Arduino/libraries/asuro/keywords.txt     (the syntax coloring file)
+˜/Documents/Arduino/libraries/asuro/examples         (the examples in the "open" menu)
+˜/Documents/Arduino/libraries/asuro/readme.txt       (this file)
 
 Now you have to tell the Arduino IDE about the ASURO robot board specifications:
 
