@@ -1,5 +1,5 @@
 This is a C++ library for Arduino for controlling the ASURO robot.
-Tested with Arduino IDE v1.6.12 on macOS and Windows 7.
+Tested with Arduino IDE v1.6.13 and 1.8 on macOS and Windows.
 
 --------------------------------------------------------------------------------
 INSTALLATION
