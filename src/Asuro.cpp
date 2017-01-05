@@ -350,21 +350,20 @@ void Asuro::setMotorSpeed (int left, int right)
 */
 void Asuro::driveSquare(int timeForOneEdge, int speed)
 {
-	int timeForTurning = 500;
+	int timeForTurning = 200;	// Estimated time for making a right turn in full speed
 	
-    setMotorSpeed(speed, speed);
-    //forwards
-    setMotorDirection (FWD, FWD);
-    delay (timeForOneEdge);
-    //right
-    setMotorDirection (FWD, RWD);
-    delay (timeForOneEdge);
-    //backwards
-    setMotorDirection (RWD, RWD);
-    delay (timeForOneEdge);
-    //left
-    setMotorDirection (RWD, FWD);
-    delay (timeForOneEdge);
+	for (int i=0; i<4; i++) {	
+    	// Drive forward
+    	setMotorSpeed(speed, speed);
+    	setMotorDirection (FWD, FWD);
+    	delay (timeForOneEdge);
+    	
+    	// Turn right
+    	setMotorSpeed(255, 255);
+    	setMotorDirection (FWD, RWD);
+    	delay (timeForTurning);
+		}
+
     setMotorSpeed(0, 0);
 }
 
