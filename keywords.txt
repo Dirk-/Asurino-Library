@@ -13,7 +13,6 @@ Asuro	KEYWORD1
 #######################################
 
 Init	KEYWORD2
-setTimer2	KEYWORD2
 readBattery	KEYWORD2
 readSwitches	KEYWORD2
 readOdometry	KEYWORD2
@@ -30,3 +29,15 @@ driveCircular	KEYWORD2
 # Constants (LITERAL1)
 #######################################
 
+OFF	LITERAL1
+ON	LITERAL1
+RED	LITERAL1
+GREEN	LITERAL1
+YELLOW	LITERAL1
+LEFT	LITERAL1
+RIGHT	LITERAL1
+FWD	LITERAL1
+BWD	LITERAL1
+RWD	LITERAL1
+BREAK	LITERAL1
+FREE	LITERAL1

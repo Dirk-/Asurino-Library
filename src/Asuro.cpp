@@ -18,15 +18,7 @@
  */
 
 #include "Asuro.h"
-#if defined(ARDUINO) && ARDUINO >= 100
-#include "Arduino.h"
-#else
-#include "WProgram.h"
-#endif
-extern "C" {
-#include <inttypes.h>
-#include <avr/interrupt.h>
-}
+
 
 // ------------ Internal constants
 
@@ -34,13 +26,14 @@ extern "C" {
 // These numbers correspond to the Arduino board, see
 // https://www.arduino.cc/en/Hacking/PinMapping and
 // http://www.asurowiki.de/pmwiki/pmwiki.php/Main/Prozessor
-#define PB5 13
-#define PB4 12
-#define PD5 5
-#define PD4 4
+#define DP_PB5 13
+#define DP_PB4 12
+#define DP_PD5 5
+#define DP_PD4 4
 #define PWM_MOTOR_L 9
 #define PWM_MOTOR_R 10
 
+// Constants specific to the ASURO board
 #define statusledred 2
 #define frontled 6
 #define irtxled 11
@@ -86,19 +79,26 @@ ISR (TIMER1_COMPA_vect)
 #endif
 
 
+/*
+     Constructor
+*/
 Asuro::Asuro(void)
 {
     // Do nothing. We could call Init() here, but we will adhere to the ASURO standard.
 }
 
 
+/*
+     Initializes the hardware (ports, ADC, PWM)
+     This function has to be called by every program first
+*/
 void Asuro::Init(void)
 {
     // Ports for motor control
-    pinMode(PB4, OUTPUT);
-    pinMode(PB5, OUTPUT);
-    pinMode(PD4, OUTPUT);
-    pinMode(PD5, OUTPUT);
+    pinMode(DP_PB4, OUTPUT);
+    pinMode(DP_PB5, OUTPUT);
+    pinMode(DP_PD4, OUTPUT);
+    pinMode(DP_PD5, OUTPUT);
     
     pinMode(frontled, OUTPUT);
     pinMode(statusledred, OUTPUT);
@@ -111,10 +111,15 @@ void Asuro::Init(void)
 
     // fix analog-to-digital converter timing (for 8 MHz clock)
     ADCSRA &= ~ADPS0;
-    setTimer2();
+    prepareIRTransmitter();
 }
 
 
+/*
+     Start Timer1 to carry out a periodically called task
+     ms Time in milliseconds
+     isrfunction Function to be carried out (void, no parameters)
+*/
 void Asuro::startTimer1(unsigned long ms, void (*isrfunction)())
 {
 #if defined (__AVR_ATmega8__)
@@ -135,6 +140,10 @@ void Asuro::startTimer1(unsigned long ms, void (*isrfunction)())
 #endif
 }
 
+
+/*
+     Stop Timer1
+*/
 void Asuro::stopTimer1()
 {
 #if defined (__AVR_ATmega8__)
@@ -146,8 +155,10 @@ void Asuro::stopTimer1()
 }
 
 
-// Set Timer2 for infrared transmitter
-void Asuro::setTimer2(void)
+/*
+     Prepare infrared transmitter (uses Timer2)
+*/
+void Asuro::prepareIRTransmitter(void)
 {
     /* Asuro infrared UART interfaces uses Timer2 with 72kHz */
 #if defined(__AVR_ATmega168__)
@@ -166,7 +177,11 @@ void Asuro::setTimer2(void)
 }
 
 
-//taillight LEDs
+/*
+     Set back LEDs, values: ON, OFF
+     left left LED status
+     right right LED status
+*/
 void Asuro::setBackLED(unsigned char left, unsigned char right)
 {
     if (left || right) {
@@ -179,14 +194,20 @@ void Asuro::setBackLED(unsigned char left, unsigned char right)
 }
 
 
-//
+/*
+     Controls the FrontLED
+     status values: ON, OFF
+*/
 void Asuro::setFrontLED(unsigned char status)
 {
     digitalWrite(frontled, status);
 }
 
 
-// Bicolor Status LED
+/*
+     Controls the StatusLED
+     color values: OFF, GREEN, RED, YELLOW
+*/
 void Asuro::setStatusLED(unsigned char color)
 {
     if (color == OFF)    {digitalWrite(statusledgreen, LOW); digitalWrite(statusledred, LOW);}
@@ -196,7 +217,10 @@ void Asuro::setStatusLED(unsigned char color)
 }
 
 
-//read front switches
+/*
+     Read out switches
+     returns bit field of switch value bit0 = K6, ... , bit5 = K1
+*/
 int Asuro::readSwitches(void)
 {
     long tmp;
@@ -209,7 +233,10 @@ int Asuro::readSwitches(void)
 }
 
 
-//read battery
+/*
+     Returns the battery voltage
+     return ADC value. range: 0..1023
+*/
 int Asuro::readBattery(void)
 {
     int tmp;
@@ -222,7 +249,10 @@ int Asuro::readBattery(void)
 }
 
 
-//read odometry
+/*
+     Reads out the odometry sensors
+     data pointer to the data destination. access: data[LEFT], data[RIGHT]
+*/
 void Asuro::readOdometry(int *data)
 {
     uint8_t oldadmux = (ADMUX & (unsigned int) 0xf0);
@@ -236,7 +266,10 @@ void Asuro::readOdometry(int *data)
 }
 
 
-//read line sensors
+/*
+     Reads out photo transistors of line sensor
+     data pointer to the data destination. access: data[LEFT], data[RIGHT]
+*/
 void Asuro::readLinesensor(int *data)
 {
     uint8_t oldadmux = (ADMUX & (unsigned int) 0xf0);
@@ -247,25 +280,29 @@ void Asuro::readLinesensor(int *data)
 }
 
 
-//motor direction
+/*
+     Motor configuration. values: FWD, BWD, RWD, (BREAK, FREE not yet available)
+     left left motor direction
+     right right motor direction
+*/
 void Asuro::setMotorDirection (int left, int right)
 {
     switch (left) {
         case FWD:
-            digitalWrite (PD4, LOW);
-            digitalWrite (PD5, HIGH);
+            digitalWrite (DP_PD4, LOW);
+            digitalWrite (DP_PD5, HIGH);
             break;
         case RWD:
-            digitalWrite (PD4, HIGH);
-            digitalWrite (PD5, LOW);
+            digitalWrite (DP_PD4, HIGH);
+            digitalWrite (DP_PD5, LOW);
             break;
         case BREAK:
-            digitalWrite (PD4, LOW);
-            digitalWrite (PD5, LOW);
+            digitalWrite (DP_PD4, LOW);
+            digitalWrite (DP_PD5, LOW);
             break;
         case FREE:
-            digitalWrite (PD4, HIGH);
-            digitalWrite (PD5, HIGH);
+            digitalWrite (DP_PD4, HIGH);
+            digitalWrite (DP_PD5, HIGH);
             break;
         default:
             break;
@@ -273,20 +310,20 @@ void Asuro::setMotorDirection (int left, int right)
     
     switch (right) {
         case FWD:
-            digitalWrite (PB4, LOW);
-            digitalWrite (PB5, HIGH);
+            digitalWrite (DP_PB4, LOW);
+            digitalWrite (DP_PB5, HIGH);
             break;
         case RWD:
-            digitalWrite (PB4, HIGH);
-            digitalWrite (PB5, LOW);
+            digitalWrite (DP_PB4, HIGH);
+            digitalWrite (DP_PB5, LOW);
             break;
         case BREAK:
-            digitalWrite (PB4, LOW);
-            digitalWrite (PB5, LOW);
+            digitalWrite (DP_PB4, LOW);
+            digitalWrite (DP_PB5, LOW);
             break;
         case FREE:
-            digitalWrite (PB4, HIGH);
-            digitalWrite (PB5, HIGH);
+            digitalWrite (DP_PB4, HIGH);
+            digitalWrite (DP_PB5, HIGH);
             break;
         default:
             break;
@@ -294,7 +331,11 @@ void Asuro::setMotorDirection (int left, int right)
 }
 
 
-//motor speed
+/*
+     Sets motor speed. range: 0..255
+     left speed of left motor
+     right speed of right motor
+*/
 void Asuro::setMotorSpeed (int left, int right)
 {
     analogWrite(PWM_MOTOR_L, left);
@@ -302,9 +343,13 @@ void Asuro::setMotorSpeed (int left, int right)
 }
 
 
-//"square" motion pattern
+/*
+     Drive a square figure for demo purposes
+*/
 void Asuro::driveSquare(int timeForOneEdge, int speed)
 {
+	int timeForTurning = 500;
+	
     setMotorSpeed(speed, speed);
     //forwards
     setMotorDirection (FWD, FWD);
@@ -322,7 +367,9 @@ void Asuro::driveSquare(int timeForOneEdge, int speed)
 }
 
 
-//circular accelerating motion pattern
+/*
+     Spin around for demo purposes
+*/
 void Asuro::driveCircular(int maxSpeed)
 {
     int var = 0;

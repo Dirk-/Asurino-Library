@@ -18,24 +18,31 @@
  License: GNU General Public License version 2.0 (GPLv2)
  
  */
-#include <inttypes.h>
+#include "Arduino.h"
 
+// LED values
 #define OFF     0
 #define ON      1
 #define RED     2
 #define GREEN   3
 #define YELLOW  4
 
+// Array indexes for line sensor and odometry
 #define LEFT    0
 #define RIGHT   1
 
+// Motor directions
 #define FWD     1
-#define RWD     0
+#define BWD     0
+#define RWD     0	// Same as BWD
 #define BREAK	3
 #define FREE	4
 
 
-// user adjustable values
+// User adjustable values
+
+// Adjust this value if your ASURO does not deliver the correct bit values
+// from readSwitches()
 #define MY_SWITCH_VALUE  62L
 
 
@@ -50,19 +57,15 @@ public:
     
     /*
      Initializes the hardware (ports, ADC, PWM)
-     this function has to be called by every program first
+     This function has to be called by every program first
      */
     void Init(void);
     
     /*
-     Prepare infrared transmitter
-     */
-    void setTimer2(void);
-    
-    /*
      Start Timer1 to carry out a periodically called task
-     ms Time in milliseconds
-     isrfunction Function to be carried out (void, no parameters)
+     
+     ms 			Time in milliseconds
+     isrfunction 	Function to be carried out (void, no parameters)
      */
     void startTimer1(unsigned long ms, void (*isrfunction)());
     
@@ -73,51 +76,59 @@ public:
 
     /*
      Set back LEDs, values: ON, OFF
-     left left LED status
-     right right LED status
+     
+     left 			left LED status
+     right 			right LED status
      */
     void setBackLED(unsigned char left, unsigned char right);
     
     /*
      Controls the StatusLED
-     color values: OFF, GREEN, RED, YELLOW
+     
+     color 			Values: OFF, GREEN, RED, YELLOW
      */
     void setStatusLED(unsigned char color);
     
     /*
-     Controls the FrontLED
-     status values: ON, OFF
+     Controls the front LED
+     
+     status 		Values: ON, OFF
      */
     void setFrontLED(unsigned char status);
     
     /*
      Read out switches
-     bit field of switch value bit0 = K6, ... , bit5 = K1
+     
+     returns bit field of switch value bit0 = K6, ... , bit5 = K1
      */
     int readSwitches(void);
     
     /*
      Returns the battery voltage
+     
      return ADC value. range: 0..1023
      */
     int readBattery(void);
     
     /*
      Reads out the odometry sensors
-     data pointer to the data destination. access: data[LEFT], data[RIGHT]
+     
+     expects data pointer to the data destination. access: data[LEFT], data[RIGHT]
      */
     void readOdometry(int *data);
     
     /*
      Reads out photo transistors of line sensor
-     data pointer to the data destination. access: data[LEFT], data[RIGHT]
+     
+     expects data pointer to the data destination. access: data[LEFT], data[RIGHT]
      */
     void readLinesensor(int *data);
     
     /*
      Motor configuration. values: FWD, RWD, (BREAK, FREE not yet available)
-     left left motor direction
-     right right motor direction
+     
+     left			left motor direction
+     right 			right motor direction
      */
     void setMotorDirection (int left, int right);
     
@@ -129,16 +140,21 @@ public:
     void setMotorSpeed (int left, int right);
     
     /*
-     Drive a square figure
+     Drive a square figure for demo purposes
      */
     void driveSquare(int timeForOneEdge, int speed);
     
     /*
-     Spin around
+     Spin around for demo purposes
      */
     void driveCircular(int maxSpeed);
     
-    
+private:
+    /*
+     Prepare infrared transmitter (uses Timer2), called from Init()
+     */
+	void prepareIRTransmitter(void);
+
 };
 
 #endif
