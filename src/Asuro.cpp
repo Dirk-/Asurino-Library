@@ -125,9 +125,9 @@ void Asuro::startTimer1(unsigned long ms, void (*isrfunction)())
 #if defined (__AVR_ATmega8__)
     ISRfunction = isrfunction;
     
-    TCCR1A = 0x00;      // Timer benutzt kein PWM
+    TCCR1A = 0x00;      // Timer does not use PWM
     
-    // ASURO-Taktfrequenz (F_CPU) ist 8 MHz. Prescaler von 1024 sorgt für 7812,5 Ticks pro Sekunde
+    // ASURO clock rate (F_CPU) is 8 MHz. Prescaler of 1024 gives 7812,5 ticks per second
     TCCR1B = (1<<CS10) | (1<<CS12) | (1<<WGM12); // Prescale = 1024, CTC ("Clear Timer on Compare")
     
     // Hier wird der Vergleichswert gesetzt
@@ -147,8 +147,10 @@ void Asuro::startTimer1(unsigned long ms, void (*isrfunction)())
 void Asuro::stopTimer1()
 {
 #if defined (__AVR_ATmega8__)
-    // Timer über das Timer/Counter Interrupt Mask Register disablen
+    // Disable timer via timer/counter interrupt mask register
     TIMSK &= ~(1<<OCIE1A);
+    // Re-enable PWM (8-Bit PWM) on OC1A & OC1B
+    TCCR1A = (1 << WGM10) | (1 << COM1A1) | (1 << COM1B1);
 #else
 #error CPU type not yet supported
 #endif
@@ -195,7 +197,7 @@ void Asuro::setBackLED(unsigned char left, unsigned char right)
 
 
 /*
-     Controls the FrontLED
+     Controls the front LED
      status values: ON, OFF
 */
 void Asuro::setFrontLED(unsigned char status)
@@ -205,7 +207,7 @@ void Asuro::setFrontLED(unsigned char status)
 
 
 /*
-     Controls the StatusLED
+     Controls the status LED
      color values: OFF, GREEN, RED, YELLOW
 */
 void Asuro::setStatusLED(unsigned char color)

@@ -41,8 +41,8 @@
 
 // User adjustable values
 
-// Adjust this value if your ASURO does not deliver the correct bit values
-// from readSwitches()
+// Adjust this value if your ASURO does not deliver the correct bit values from readSwitches()
+// You have to recompile the library to put this into effect
 #define MY_SWITCH_VALUE  62L
 
 
@@ -62,7 +62,8 @@ public:
     void Init(void);
     
     /*
-     Start Timer1 to carry out a periodically called task
+     Start Timer1 to carry out a periodically called task. This interferes with
+     the motor pwm signals, so don't use it when driving
      
      ms 			Time in milliseconds
      isrfunction 	Function to be carried out (void, no parameters)
@@ -83,7 +84,7 @@ public:
     void setBackLED(unsigned char left, unsigned char right);
     
     /*
-     Controls the StatusLED
+     Controls the status LED
      
      color 			Values: OFF, GREEN, RED, YELLOW
      */
