@@ -28,10 +28,10 @@ When installed, the library should look like this (macOS example):
 ˜/Documents/Arduino/hardware/asuro/avr/platform.txt  (ASURO platform compile options)
 ```
 
-Done.
+**Done.**
 
 Instead of adding the two hardware definition files to your installation, you can also 
-edit the original boards.txt file (not recommended, as it will get overwritten when
+edit the original `boards.txt` file (*not recommended*, as it will get overwritten when
 installing new versions of the Arduino IDE):
 
 - Close the Arduino IDE
@@ -69,16 +69,16 @@ After the library is installed, you just have to start the Arduino application.
 
 - Select `Tools` - `Boards` - `Asuro w/ ATmega8` from the Arduino menu
 
-To use this library in a sketch, go to the Sketch | Import Library menu and
-select Asuro.  This will add a corresponding line to the top of your sketch:
+To use this library in a sketch, go to the `Sketch` | `Import Library` menu and
+select `Asuro`.  This will add a corresponding line to the top of your sketch:
 
 `#include <Asuro.h>`
 
 To stop using this library, delete that line from your sketch.
 
-Uploading the compiled sketch to ASURO directly from the Arduino iDE is not
+Uploading the compiled sketch to ASURO directly from the Arduino IDE is not
 supported. You have to select `Export compiled binary file` and `Show sketch folder` 
-from the `Sketch` menu. Upload this file with [ASURO Flash Tool](http://www.arexx.com/downloads/asuro/ASURO_flash_v155.zip) (Windows)
+from the `Sketch` menu. Upload this file with the [ASURO Flash Tool](http://www.arexx.com/downloads/asuro/ASURO_flash_v155.zip) (Windows)
 or [ASURO McFlash](https://itunes.apple.com/app/asuro-mcflash/id982784471?mt=12) (macOS). 
 You'll find ASURO McFlash in the Mac App store.
 

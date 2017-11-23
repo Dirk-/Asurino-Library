@@ -78,7 +78,7 @@ select Asuro.  This will add a corresponding line to the top of your sketch:
 
 To stop using this library, delete that line from your sketch.
 
-Uploading the compiled sketch to ASURO directly from the Arduino iDE is not
+Uploading the compiled sketch to ASURO directly from the Arduino IDE is not
 supported. You have to select "Export compiled binary file" and "Show sketch
 folder" from the "Sketch" menu. Upload this file with ASURO Flash Tool (Windows)
 or ASURO McFlash (macOS). You'll find ASURO McFlash in the App store.
