@@ -63,7 +63,7 @@ installing new versions of the Arduino IDE):
  asuro8.build.variant=arduino:standard
 ``` 
  
-## Building an ASURO sketch
+## Building an ASURO Sketch
 
 After the library is installed, you just have to start the Arduino application.
 
