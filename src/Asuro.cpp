@@ -186,13 +186,26 @@ void Asuro::prepareIRTransmitter(void)
 */
 void Asuro::setBackLED(unsigned char left, unsigned char right)
 {
-    if (left || right) {
-        PORTD &= ~(1 << PD7); // Wheel LED OFF
-        DDRC |= (1 << PC0) | (1 << PC1); // Output => no odometrie
-        PORTC |= (1 << PC0) | (1 << PC1);
-    }
-    if (!left) PORTC &= ~(1 << PC1);
-    if (!right) PORTC &= ~(1 << PC0);
+	if (left) {
+		PORTD &= ~(1 << PD7); // Wheel LED OFF
+		DDRC |= (1 << PC1); // Output => no odometrie
+		PORTC |= (1 << PC1);
+	}
+	else {
+		PORTD |= (1 << PD7); 
+		DDRC &=~ (1 << PC1); 
+		PORTC &=~ (1 << PC1);
+	}
+	if (right) {
+		PORTD &= ~(1 << PD7); // Wheel LED OFF
+		DDRC |= (1 << PC0); // Output => no odometrie
+		PORTC |= (1 << PC0);
+	}
+	else {
+		PORTD |= (1 << PD7); 
+		DDRC &=~ (1 << PC0); 
+		PORTC &=~ (1 << PC0);
+	}	
 }
 
 
@@ -257,14 +270,9 @@ int Asuro::readBattery(void)
 */
 void Asuro::readOdometry(int *data)
 {
-    uint8_t oldadmux = (ADMUX & (unsigned int) 0xf0);
-    ADMUX = (1 << REFS0) ;
-    DDRC &= ~((1 << PC0) | (1 << PC1));   // Back-LEDs off
     digitalWrite(odometricled, HIGH);
-    delayMicroseconds(10);
     data[LEFT] = analogRead(lodometric);
     data[RIGHT] = analogRead(rodometric);
-    ADMUX = oldadmux;
 }
 
 
@@ -340,6 +348,18 @@ void Asuro::setMotorDirection (int left, int right)
 */
 void Asuro::setMotorSpeed (int left, int right)
 {
+	left = constrain(left, -255, 255);
+	right = constrain(right, -255, 255);
+	int motorDirs[2] {FWD, FWD};
+	if (left < 0) {
+		left = -left;
+		motorDirs[LEFT] = RWD;
+	}
+	if (right < 0) {
+		right = -right;
+		motorDirs[RIGHT] = RWD;
+	}
+	Asuro::setMotorDirection(motorDirs[LEFT], motorDirs[RIGHT]);
     analogWrite(PWM_MOTOR_L, left);
     analogWrite(PWM_MOTOR_R, right);
 }
