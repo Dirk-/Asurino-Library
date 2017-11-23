@@ -8,10 +8,10 @@ INSTALLATION
 To install this library
 
 - Download the ZIP file and extract everything
-- Rename the folder "Asurino-Library-master" or "Asurino-Library-0.5" (depending
+- Rename the folder "Asurino-Library-master" or "Asurino-Library-0.6.1" (depending
   on the way you downloaded it from GitHub) to "asuro"
 - Move the "asuro" folder to "C:\Users\<username>\Documents\Arduino\libraries" (Windows) 
-  or your "˜/Documents/Arduino/libraries" folder (OS X) 
+  or your "˜/Documents/Arduino/libraries" folder (macOS) 
 - Move the contents of "move to hardware" to "C:\Users\<username>\Documents\Arduino\hardware" 
   (Windows) or your "˜/Documents/Arduino/hardware" folder (macOS). If the "hardware"
   folder does not exist, create it.
