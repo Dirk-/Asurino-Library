@@ -3,7 +3,7 @@
 This is a C++ library for Arduino for controlling the [ASURO](http://www.arexx.nl/arexx.php?cmd=goto&cparam=p_asuro) robot.
 Tested with Arduino IDE v1.6.13 and 1.8 on macOS and Windows.
 
-## INSTALLATION
+## Setup
 
 1. Download the ZIP file and extract everything.
 2. Rename the folder `Asurino-Library-master` or `Asurino-Library-0.6.1` (depending on 
@@ -42,7 +42,6 @@ installing new versions of the Arduino IDE):
 - Add the following lines to the end of `boards.txt`:
 
 ```
-#############################################
  asuro8.name=Asuro w/ ATmega8
  
  asuro8.upload.protocol=stk500
@@ -64,17 +63,7 @@ installing new versions of the Arduino IDE):
  asuro8.build.variant=arduino:standard
 ``` 
  
-1. Install [Homebrew](https://brew.sh). You can do that with `/usr/bin/ruby -e "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)"`
-
-2. Install `ps2eps` which does all the work (convert single page PDFs to EPS and calculate
-the bounding box): `brew install ps2eps`
-3. Double click the Automator service `Crop PDF Graphic`. You can decide whether to open it in 
-Automator or to install it. If you choose to install it, it will be placed inside the  
-`Services` folder in your user's `Library` folder.
-4. After installation the service is available in the `Services` context menu when you
-click on a PDF.
-
-## BUILDING
+## Building an ASURO sketch
 
 After the library is installed, you just have to start the Arduino application.
 
