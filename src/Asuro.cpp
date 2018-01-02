@@ -51,6 +51,9 @@
 
 #define IR_CLOCK_RATE    36000L
 
+// Calculation factor for the switches bit field
+#define STANDARD_SWITCH_FACTOR 62L
+
 
 // -------------
 
@@ -84,7 +87,17 @@ ISR (TIMER1_COMPA_vect)
 */
 Asuro::Asuro(void)
 {
-    // Do nothing. We could call Init() here, but we will adhere to the ASURO standard.
+    // Do almost nothing. We could call Init() here, but we will adhere to the ASURO standard.
+    _switchFactor = STANDARD_SWITCH_FACTOR;
+}
+
+/*
+     Constructor
+*/
+Asuro::Asuro(long switchFactor)
+{
+    // Do almost nothing. We could call Init() here, but we will adhere to the ASURO standard.
+    _switchFactor = switchFactor;
 }
 
 
@@ -220,6 +233,22 @@ void Asuro::setStatusLED(unsigned char color)
 
 
 /*
+     Set the calculation value for the switches bit field
+*/
+void Asuro::setSwitchFactor(long switchFactor)
+{
+    _switchFactor = switchFactor;
+}
+    
+/*
+     Get the calculation value for the switches bit field
+*/
+void Asuro::getSwitchFactor(void)
+{
+    return _switchFactor;
+}
+    
+/*
      Read out switches
      returns bit field of switch value bit0 = K6, ... , bit5 = K1
 */
@@ -231,7 +260,7 @@ int Asuro::readSwitches(void)
     delayMicroseconds(10);
     tmp = analogRead(switches);
     digitalWrite(3, LOW);
-    return ((10240000L/tmp-10000L)*MY_SWITCH_VALUE+5000L)/10000;
+    return ((10240000L/tmp-10000L)*_switchFactor+5000L)/10000;
 }
 
 

@@ -39,13 +39,6 @@
 #define FREE	4
 
 
-// User adjustable values
-
-// Adjust this value if your ASURO does not deliver the correct bit values from readSwitches()
-// You have to recompile the library to put this into effect
-#define MY_SWITCH_VALUE  62L
-
-
 // Class definition
 class Asuro {
 
@@ -55,6 +48,21 @@ public:
      */
     Asuro(void);
     
+    /*
+     Constructor
+     */
+    Asuro(long switchFactor);
+    
+    /*
+     Set the calculation factor for the switches bit field
+     */
+    void setSwitchFactor(long switchFactor);
+    
+	/*
+     Get the calculation value for the switches bit field
+	*/
+	void Asuro::getSwitchFactor(void);
+
     /*
      Initializes the hardware (ports, ADC, PWM)
      This function has to be called by every program first
@@ -151,6 +159,11 @@ public:
     void driveCircular(int maxSpeed);
     
 private:
+	/*
+	 Variable for the calculation factor for the switches bit field
+	 */
+	long _switchFactor = 62L;
+	
     /*
      Prepare infrared transmitter (uses Timer2), called from Init()
      */
