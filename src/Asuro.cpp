@@ -93,6 +93,8 @@ Asuro::Asuro(void)
 
 /*
      Constructor
+     
+     switchFactor Calculation factor for the switches bit field. Standard value is 62 (decimal).
 */
 Asuro::Asuro(long switchFactor)
 {
@@ -130,8 +132,9 @@ void Asuro::Init(void)
 
 /*
      Start Timer1 to carry out a periodically called task
-     ms Time in milliseconds
-     isrfunction Function to be carried out (void, no parameters)
+     
+     ms 			Time in milliseconds
+     isrfunction 	Function to be carried out (void, no parameters)
 */
 void Asuro::startTimer1(unsigned long ms, void (*isrfunction)())
 {
@@ -194,8 +197,9 @@ void Asuro::prepareIRTransmitter(void)
 
 /*
      Set back LEDs, values: ON, OFF
-     left left LED status
-     right right LED status
+     
+     left 	left LED status
+     right 	right LED status
 */
 void Asuro::setBackLED(unsigned char left, unsigned char right)
 {
@@ -246,7 +250,9 @@ void Asuro::setStatusLED(unsigned char color)
 
 
 /*
-     Set the calculation value for the switches bit field
+     Set the calculation factor for the switches bit field.
+     Standard value is 62 (decimal). Vary this value if you get
+     wrong results from the readSwitches() function.
 */
 void Asuro::setSwitchFactor(long switchFactor)
 {
@@ -254,7 +260,8 @@ void Asuro::setSwitchFactor(long switchFactor)
 }
     
 /*
-     Get the calculation value for the switches bit field
+     Get the calculation factor for the switches bit field.
+     Standard value is 62 (decimal). 
 */
 void Asuro::getSwitchFactor(void)
 {
@@ -263,6 +270,7 @@ void Asuro::getSwitchFactor(void)
     
 /*
      Read out switches
+     
      returns bit field of switch value bit0 = K6, ... , bit5 = K1
 */
 int Asuro::readSwitches(void)
@@ -279,6 +287,7 @@ int Asuro::readSwitches(void)
 
 /*
      Returns the battery voltage
+     
      return ADC value. range: 0..1023
 */
 int Asuro::readBattery(void)
@@ -295,7 +304,8 @@ int Asuro::readBattery(void)
 
 /*
      Reads out the odometry sensors
-     data pointer to the data destination. access: data[LEFT], data[RIGHT]
+     
+     data 	Pointer to the data destination array. access: data[LEFT], data[RIGHT]
 */
 void Asuro::readOdometry(int *data)
 {
@@ -307,7 +317,8 @@ void Asuro::readOdometry(int *data)
 
 /*
      Reads out photo transistors of line sensor
-     data pointer to the data destination. access: data[LEFT], data[RIGHT]
+     
+     data 	Pointer to the data destination array. access: data[LEFT], data[RIGHT]
 */
 void Asuro::readLinesensor(int *data)
 {
@@ -321,6 +332,7 @@ void Asuro::readLinesensor(int *data)
 
 /*
      Motor configuration. values: FWD, BWD, RWD, (BREAK, FREE not yet available)
+     
      left left motor direction
      right right motor direction
 */
@@ -372,8 +384,9 @@ void Asuro::setMotorDirection (int left, int right)
 
 /*
      Sets motor speed. range: 0..255
-     left speed of left motor
-     right speed of right motor
+     
+     left 	speed of left motor
+     right 	speed of right motor
 */
 void Asuro::setMotorSpeed (int left, int right)
 {
@@ -394,9 +407,12 @@ void Asuro::setMotorSpeed (int left, int right)
 }
 
 
-/*
+    /*
      Drive a square figure for demo purposes
-*/
+     
+     timeForOneEdge		time in ms
+     speed				Range 0..255
+     */
 void Asuro::driveSquare(int timeForOneEdge, int speed)
 {
 	int timeForTurning = 200;	// Estimated time for making a right turn in full speed

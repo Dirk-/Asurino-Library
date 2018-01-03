@@ -50,16 +50,21 @@ public:
     
     /*
      Constructor
+     
+     switchFactor Calculation factor for the switches bit field. Standard value is 62 (decimal).
      */
     Asuro(long switchFactor);
     
     /*
-     Set the calculation factor for the switches bit field
+     Set the calculation factor for the switches bit field.
+     Standard value is 62 (decimal). Vary this value if you get
+     wrong results from the readSwitches() function.
      */
     void setSwitchFactor(long switchFactor);
     
 	/*
-     Get the calculation value for the switches bit field
+     Get the calculation factor for the switches bit field.
+     Standard value is 62 (decimal). 
 	*/
 	void Asuro::getSwitchFactor(void);
 
@@ -122,14 +127,14 @@ public:
     /*
      Reads out the odometry sensors
      
-     expects data pointer to the data destination. access: data[LEFT], data[RIGHT]
+     data 	Pointer to the data destination array. access: data[LEFT], data[RIGHT]
      */
     void readOdometry(int *data);
     
     /*
      Reads out photo transistors of line sensor
      
-     expects data pointer to the data destination. access: data[LEFT], data[RIGHT]
+     data 	Pointer to the data destination array. access: data[LEFT], data[RIGHT]
      */
     void readLinesensor(int *data);
     
@@ -143,13 +148,17 @@ public:
     
     /*
      Sets motor speed. range: 0..255
-     left speed of left motor
-     right speed of right motor
+     
+     left 	speed of left motor
+     right 	speed of right motor
      */
     void setMotorSpeed (int left, int right);
     
     /*
      Drive a square figure for demo purposes
+     
+     timeForOneEdge		time in ms
+     speed				Range 0..255
      */
     void driveSquare(int timeForOneEdge, int speed);
     
