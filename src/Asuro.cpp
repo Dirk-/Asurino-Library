@@ -263,7 +263,7 @@ void Asuro::setSwitchFactor(long switchFactor)
      Get the calculation factor for the switches bit field.
      Standard value is 62 (decimal). 
 */
-void Asuro::getSwitchFactor(void)
+long Asuro::getSwitchFactor(void)
 {
     return _switchFactor;
 }
@@ -279,7 +279,7 @@ int Asuro::readSwitches(void)
     pinMode(3, OUTPUT);
     digitalWrite(3, HIGH);
     delayMicroseconds(10);
-    tmp = analogRead(switches);
+    tmp = analogRead(switches);	// 0..1023
     digitalWrite(3, LOW);
     return ((10240000L/tmp-10000L)*_switchFactor+5000L)/10000;
 }

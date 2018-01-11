@@ -15,6 +15,8 @@ Asuro	KEYWORD1
 Init	KEYWORD2
 readBattery	KEYWORD2
 readSwitches	KEYWORD2
+setSwitchFactor	KEYWORD2
+getSwitchFactor	KEYWORD2
 readOdometry	KEYWORD2
 readLinesensor	KEYWORD2
 setStatusLED	KEYWORD2

@@ -66,7 +66,7 @@ public:
      Get the calculation factor for the switches bit field.
      Standard value is 62 (decimal). 
 	*/
-	void Asuro::getSwitchFactor(void);
+	long Asuro::getSwitchFactor(void);
 
     /*
      Initializes the hardware (ports, ADC, PWM)
