@@ -383,7 +383,9 @@ void Asuro::setMotorDirection (int left, int right)
 
 
 /*
-     Sets motor speed. range: 0..255
+     Sets motor speed. range: -255..255
+     
+     Attention: Also sets motor direction, negative values mean backward direction.
      
      left 	speed of left motor
      right 	speed of right motor
