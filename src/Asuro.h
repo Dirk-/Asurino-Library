@@ -19,7 +19,6 @@
  
  */
 #include "Arduino.h"
-
 // LED values
 #define OFF     0
 #define ON      1
@@ -62,11 +61,11 @@ public:
      */
     void setSwitchFactor(long switchFactor);
     
-	/*
+    /*
      Get the calculation factor for the switches bit field.
      Standard value is 62 (decimal). 
-	*/
-	long Asuro::getSwitchFactor(void);
+    */
+    long getSwitchFactor(void);
 
     /*
      Initializes the hardware (ports, ADC, PWM)
@@ -110,6 +109,13 @@ public:
      */
     void setFrontLED(unsigned char status);
     
+    /*
+     Read out switches
+     Interpolated x^3
+     returns bit field of switch value bit0 = K6, ... , bit5 = K1
+     */
+    int readSwitchesX3(void);
+
     /*
      Read out switches
      
