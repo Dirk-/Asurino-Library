@@ -131,7 +131,8 @@ void Asuro::Init(void)
 
 
 /*
-     Start Timer1 to carry out a periodically called task
+     Start Timer1 to carry out a periodically called task. This interferes with
+     the motor pwm signals, so don't use it when driving
      
      ms 			Time in milliseconds
      isrfunction 	Function to be carried out (void, no parameters)
@@ -146,11 +147,11 @@ void Asuro::startTimer1(unsigned long ms, void (*isrfunction)())
     // ASURO clock rate (F_CPU) is 8 MHz. Prescaler of 1024 gives 7812,5 ticks per second
     TCCR1B = (1<<CS10) | (1<<CS12) | (1<<WGM12); // Prescale = 1024, CTC ("Clear Timer on Compare")
     
-    // Hier wird der Vergleichswert gesetzt
+    // Calculate and set compare value
     unsigned long compare = F_CPU / 1024L * ms  / 1000L;
     OCR1A = compare;
     
-    TIMSK |= (1<<OCIE1A); // Compare A Match Interrupt aktivieren
+    TIMSK |= (1<<OCIE1A); // Timer 1 Output Compare A Match Interrupt Enable
 #else
 #error CPU type not yet supported
 #endif
@@ -383,7 +384,7 @@ void Asuro::setMotorDirection (int left, int right)
 
 
 /*
-     Sets motor speed. range: -255..255
+     Sets motor speed. range: -MAX_SPEED..MAX_SPEED
      
      Attention: Also sets motor direction, negative values mean backward direction.
      
@@ -392,8 +393,8 @@ void Asuro::setMotorDirection (int left, int right)
 */
 void Asuro::setMotorSpeed (int left, int right)
 {
-	left = constrain(left, -255, 255);
-	right = constrain(right, -255, 255);
+	left = constrain(left, -MAX_SPEED, MAX_SPEED);
+	right = constrain(right, -MAX_SPEED, MAX_SPEED);
 	int motorDirs[2] {FWD, FWD};
 	if (left < 0) {
 		left = -left;
@@ -426,7 +427,7 @@ void Asuro::driveSquare(int timeForOneEdge, int speed)
     	delay (timeForOneEdge);
     	
     	// Turn right
-    	setMotorSpeed(255, 255);
+    	setMotorSpeed(MAX_SPEED, MAX_SPEED);
     	setMotorDirection (FWD, RWD);
     	delay (timeForTurning);
 		}
@@ -441,8 +442,8 @@ void Asuro::driveSquare(int timeForOneEdge, int speed)
 void Asuro::driveCircular(int maxSpeed)
 {
     int var = 0;
-    if (maxSpeed > 255)
-        maxSpeed = 255;
+    if (maxSpeed > MAX_SPEED)
+        maxSpeed = MAX_SPEED;
     setMotorDirection(FWD, RWD);
     while(var < maxSpeed)
     {

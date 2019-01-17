@@ -38,6 +38,9 @@
 #define BREAK	3
 #define FREE	4
 
+// Maximum motor speed
+#define MAX_SPEED 255
+
 
 // Class definition
 class Asuro {

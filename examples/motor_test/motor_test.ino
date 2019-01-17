@@ -14,21 +14,21 @@ void setup()
 void loop()
 {
   // Test motion patterns
-  asuro.driveCircular (255);
+  asuro.driveCircular (MAX_SPEED);
 
   int var = 0;
   while (var < 10) {
-    asuro.driveSquare (100, 255);
+    asuro.driveSquare (100, MAX_SPEED);
     var++;
   }
   
   // test engines backward and forward
-  asuro.setMotorSpeed(255, 255);
+  asuro.setMotorSpeed(MAX_SPEED, MAX_SPEED);
   //forward
-  asuro.setMotorDirection (1, 1);
+  asuro.setMotorDirection (FWD, FWD);
   delay (500);
-  asuro.setMotorDirection (0,0);
+  asuro.setMotorDirection (BWD, BWD);
   delay (500);  
-  asuro.setMotorSpeed(0,0);
+  asuro.setMotorSpeed(OFF, OFF);
 }
 

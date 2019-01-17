@@ -27,13 +27,13 @@ void loop()
   asuro.setFrontLED(OFF);  
   
   // taillights 
-  asuro.setBackLED (1,1);
+  asuro.setBackLED (ON, ON);
   delay(200);
-  asuro.setBackLED (0,1);
+  asuro.setBackLED (OFF, ON);
   delay(200);
-  asuro.setBackLED (1,0);
+  asuro.setBackLED (ON, OFF);
   delay(200);
-  asuro.setBackLED (1,1);
+  asuro.setBackLED (ON, ON);
   delay(200);
 }
 
