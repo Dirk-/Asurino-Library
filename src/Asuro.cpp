@@ -285,6 +285,26 @@ int Asuro::readSwitches(void)
     return ((10240000L/tmp-10000L)*_switchFactor+5000L)/10000;
 }
 
+/*
+     Read out switches
+     x^3 Interpolation
+     returns bit field of switch value bit0 = K6, ... , bit5 = K1
+*/
+int Asuro::readSwitchesX3(void)
+{
+    long tmp;
+    pinMode(3, OUTPUT);
+    digitalWrite(3, HIGH);
+    delayMicroseconds(10);
+    tmp = analogRead(switches);	// 0..1023
+    digitalWrite(3, LOW);
+    //-0,1+0,5
+    double x = tmp;
+    int sw = fmax( -2.28599856254619E-07*x*x*x + 0.000682617808856135*x*x - 0.752374263864664*x + 299.852039530042, 0);
+
+    return sw;
+}
+
 
 /*
      Returns the battery voltage
